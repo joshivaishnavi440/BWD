@@ -1,0 +1,48 @@
+body{
+    margin: 0px;
+    padding: 0pc;
+    background: url("colour img.avif") no-repeat;
+    background-size: cover;
+}
+
+.login{
+    width: 300px;
+    height: 370px;
+    background-color: rgba(179, 165, 243, 0.432);
+    border-radius: 10px; 
+    padding: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login h1{
+    text-align: center;
+}
+
+.login input{
+    width: 100%;
+    height: 75%;
+    /* border: 1px solid blue; */
+    display: block;
+}
+
+.login label{
+    /* border: 1px solid blue; */
+    display: block;
+    padding: 5px;
+}
+
+.login button{
+    display: block;
+    width: 100%;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.login button:hover{
+    background-color: rgb(180, 109, 22);
+    transition: 1s;
+    color: aliceblue;
+}

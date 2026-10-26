@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login System</title>
+  <style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(135deg, #4f46e5, #43464b);
+}
+
+.card {
+  width: 100%;
+  max-width: 380px;
+  background: #fff;
+  padding: 32px 28px;
+  border-radius: 14px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.hidden { display: none; }
+
+h2 { color: #1f2937; margin-bottom: 4px; }
+.sub { color: #6b7280; font-size: 14px; margin-bottom: 20px; }
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin: 12px 0 6px;
+}
+
+input {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover { background: #4338ca; }
+button.danger { background: #dc2626; }
+button.danger:hover { background: #b91c1c; }
+
+a { color: #4f46e5; text-decoration: none; font-weight: 600; }
+a:hover { text-decoration: underline; }
+
+.link.right { display: block; text-align: right; font-size: 13px; margin-top: 8px; }
+.switch { text-align: center; font-size: 14px; color: #6b7280; margin-top: 18px; }
+
+.msg { font-size: 13px; margin-top: 12px; text-align: center; min-height: 18px; }
+.msg.ok  { color: #16a34a; }
+.msg.err { color: #dc2626; }
+
+    </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <section class="card" id="login">
+    <h2>Welcome Back</h2>
+    <p class="sub">Please log in to continue</p>
+    <form id="loginForm">
+      <label>Email</label>
+      <input type="email" id="loginEmail" placeholder="you@example.com" required>
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Enter password" required>
+      <a href="#forgot" class="link right" data-go="forgot">Forgot password?</a>
+      <button type="submit">Login</button>
+      <p class="msg" id="loginMsg"></p>
+    </form>
+    <p class="switch">New here? <a href="#register" data-go="register">Create an account</a></p>
+  </section>
+
+  <!-- REGISTRATION -->
+  <section class="card hidden" id="register">
+    <h2>Create Account</h2>
+    <p class="sub">Fill in your details to register</p>
+    <form id="registerForm">
+      <label>Full Name</label>
+      <input type="text" id="regName" placeholder="Your name" required>
+      <label>Email</label>
+      <input type="email" id="regEmail" placeholder="you@example.com" required>
+      <label>Password</label>
+      <input type="password" id="regPass" placeholder="At least 6 characters" minlength="6" required>
+      <label>Confirm Password</label>
+      <input type="password" id="regPass2" placeholder="Repeat password" required>
+      <button type="submit">Register</button>
+      <p class="msg" id="regMsg"></p>
+    </form>
+    <p class="switch">Already have an account? <a href="#login" data-go="login">Login</a></p>
+  </section>
+
+  <!-- FORGOT PASSWORD -->
+  <section class="card hidden" id="forgot">
+    <h2>Forgot Password</h2>
+    <p class="sub">Enter your email and a new password</p>
+    <form id="forgotForm">
+      <label>Registered Email</label>
+      <input type="email" id="forgotEmail" placeholder="you@example.com" required>
+      <label>New Password</label>
+      <input type="password" id="forgotPass" placeholder="At least 6 characters" minlength="6" required>
+      <button type="submit">Reset Password</button>
+      <p class="msg" id="forgotMsg"></p>
+    </form>
+    <p class="switch"><a href="#login" data-go="login">Back to Login</a></p>
+  </section>
+
+  <!-- DASHBOARD (shown after login) -->
+  <section class="card hidden" id="dashboard">
+    <h2>Hello, <span id="userName"></span> 👋</h2>
+    <p class="sub">You are logged in successfully.</p>
+    <button id="logoutBtn" class="danger">Logout</button>
+  </section>
+
+  <script>
+    const pages = ["login", "register", "forgot", "dashboard"];
+    const getUsers = () => JSON.parse(localStorage.getItem("users") || "[]");
+    const saveUsers = u => localStorage.setItem("users", JSON.stringify(u));
+
+    function show(id) {
+      pages.forEach(p => document.getElementById(p).classList.toggle("hidden", p !== id));
+      document.querySelectorAll(".msg").forEach(m => { m.textContent = ""; m.className = "msg"; });
+    }
+    function say(el, text, ok) {
+      el.textContent = text;
+      el.className = "msg " + (ok ? "ok" : "err");
+    }
+
+    // Switch between pages
+    document.querySelectorAll("[data-go]").forEach(a =>
+      a.addEventListener("click", e => { e.preventDefault(); show(a.dataset.go); })
+    );
+
+    // Register
+    document.getElementById("registerForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const msg = document.getElementById("regMsg");
+      const name = regName.value.trim(), email = regEmail.value.trim().toLowerCase();
+      if (regPass.value !== regPass2.value) return say(msg, "Passwords do not match.", false);
+      const users = getUsers();
+      if (users.some(u => u.email === email)) return say(msg, "Email already registered.", false);
+      users.push({ name, email, password: regPass.value });
+      saveUsers(users);
+      e.target.reset();
+      say(msg, "Registered! You can now log in.", true);
+    });
+
+    // Login
+    document.getElementById("loginForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const msg = document.getElementById("loginMsg");
+      const user = getUsers().find(u =>
+        u.email === loginEmail.value.trim().toLowerCase() && u.password === loginPass.value);
+      if (!user) return say(msg, "Invalid email or password.", false);
+      sessionStorage.setItem("currentUser", user.email);
+      userName.textContent = user.name;
+      e.target.reset();
+      show("dashboard");
+    });
+
+    // Forgot password
+    document.getElementById("forgotForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const msg = document.getElementById("forgotMsg");
+      const users = getUsers();
+      const user = users.find(u => u.email === forgotEmail.value.trim().toLowerCase());
+      if (!user) return say(msg, "No account found with that email.", false);
+      user.password = forgotPass.value;
+      saveUsers(users);
+      e.target.reset();
+      say(msg, "Password updated. Please log in.", true);
+    });
+
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      sessionStorage.removeItem("currentUser");
+      show("login");
+    });
+
+    // Stay logged in on refresh
+    const current = getUsers().find(u => u.email === sessionStorage.getItem("currentUser"));
+    if (current) { userName.textContent = current.name; show("dashboard"); }
+  </script>
+</body>
+</html>

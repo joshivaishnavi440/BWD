@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Navigation Menu</title>
+
+    <style>
+        /* General styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background: #172554;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Horizontal navigation */
+        .horizontal-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 10px;
+        }
+
+        .horizontal-nav a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .horizontal-nav a:hover,
+        .horizontal-nav a.active {
+            background: #2563eb;
+        }
+
+        /* Hamburger button */
+        .hamburger {
+            display: none;
+            font-size: 28px;
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Page layout */
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Vertical sidebar navigation */
+        .sidebar {
+            width: 230px;
+            background: #1e293b;
+            padding: 25px 15px;
+            flex-shrink: 0;
+        }
+
+        .sidebar h3 {
+            color: #93c5fd;
+            margin: 0 0 20px 10px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 14px 12px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* Main content */
+        main {
+            flex: 1;
+            padding: 40px;
+        }
+
+        main h1 {
+            color: #172554;
+            margin-bottom: 15px;
+        }
+
+        main p {
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px #00000010;
+        }
+
+        .card h2 {
+            color: #2563eb;
+            margin-bottom: 12px;
+            font-size: 20px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-wrap: wrap;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .horizontal-nav {
+                display: none;
+                width: 100%;
+                order: 3;
+            }
+
+            .horizontal-nav.open {
+                display: block;
+            }
+
+            .horizontal-nav ul {
+                flex-direction: column;
+                gap: 5px;
+                padding-top: 15px;
+            }
+
+            .horizontal-nav a {
+                background: #1e3a8a;
+            }
+
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .sidebar h3 {
+                margin-bottom: 10px;
+            }
+
+            .sidebar ul {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .sidebar a {
+                padding: 10px 12px;
+                margin: 0;
+            }
+
+            main {
+                padding: 25px 20px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header and horizontal navigation -->
+    <header>
+        <div class="logo">MyWebsite</div>
+
+        <button
+            class="hamburger"
+            id="hamburger"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="horizontalNav">
+            ☰
+        </button>
+
+        <nav class="horizontal-nav" id="horizontalNav"
+             aria-label="Main navigation">
+            <ul>
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="layout">
+
+        <!-- Vertical navigation sidebar -->
+        <aside class="sidebar">
+            <h3>Vertical Menu</h3>
+
+            <nav aria-label="Sidebar navigation">
+                <ul>
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Our Services</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main webpage content -->
+        <main id="home">
+            <h1>Responsive Navigation Demo</h1>
+
+            <p>
+                Welcome to this responsive webpage. It includes a
+                horizontal navigation bar, a vertical sidebar menu,
+                and a hamburger menu for smaller screens.
+            </p>
+
+            <div class="cards">
+                <section class="card" id="about">
+                    <h2>Horizontal Menu</h2>
+                    <p>
+                        Displays navigation links in a row at the top
+                        of the webpage on larger screens.
+                    </p>
+                </section>
+
+                <section class="card" id="services">
+                    <h2>Vertical Menu</h2>
+                    <p>
+                        Displays navigation links in a sidebar.
+                        On mobile, the sidebar changes to a horizontal layout.
+                    </p>
+                </section>
+
+                <section class="card" id="projects">
+                    <h2>Hamburger Menu</h2>
+                    <p>
+                        On smaller screens, click the hamburger icon
+                        to show or hide the horizontal navigation links.
+                    </p>
+                </section>
+            </div>
+
+            <section id="contact" style="margin-top: 35px;">
+                <h2>Contact Us</h2>
+                <p>Email: hello@example.com</p>
+            </section>
+        </main>
+
+    </div>
+
+    <!-- JavaScript for hamburger menu -->
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const horizontalNav = document.getElementById("horizontalNav");
+
+      hamburger.addEventListener("click", function () {
+          const isOpen = horizontalNav.classList.toggle("open");
+
+          hamburger.setAttribute("aria-expanded", isOpen);
+          hamburger.setAttribute(
+              "aria-label",
+              isOpen ? "Close navigation menu" : "Open navigation menu"
+          );
+
+          hamburger.textContent = isOpen ? "✕" : "☰";
+      });
+  </script>
+
+</body>
+</html>
